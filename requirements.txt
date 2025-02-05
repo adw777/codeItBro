@@ -10,3 +10,11 @@ transformers
 trl
 unsloth
 vllm
+
+
+# for eval
+rouge-score 
+nltk 
+evaluate 
+bert-score 
+tqdm
