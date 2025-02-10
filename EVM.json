@@ -1,0 +1,182 @@
+[
+    {
+        "question": "What is Solidity and what is it used for?",
+        "answer": "Solidity is a high-level programming language designed for implementing smart contracts on blockchain platforms like Ethereum. It is used to write programs that execute on the Ethereum Virtual Machine (EVM), enabling the creation of decentralized applications (dApps)."
+    },
+    {
+        "question": "How do I declare a variable in Solidity?",
+        "answer": "In Solidity, you can declare a variable by specifying its type and name. For example, to declare an unsigned integer, you would write: `uint public myVariable;`. The `public` keyword automatically generates a getter function for the variable."
+    },
+    {
+        "question": "What is the Ethereum Virtual Machine (EVM)?",
+        "answer": "The Ethereum Virtual Machine (EVM) is a runtime environment for executing smart contracts on the Ethereum blockchain. It is a decentralized, Turing-complete virtual machine that ensures code runs exactly as programmed without downtime, censorship, or third-party interference."
+    },
+    {
+        "question": "How do I deploy a smart contract on Ethereum?",
+        "answer": "To deploy a smart contract on Ethereum, you need to compile your Solidity code into bytecode using a compiler like `solc`. Then, you can deploy it using tools like Remix, Truffle, or Hardhat. You'll need to send a transaction to the Ethereum network with the compiled bytecode and pay the required gas fees."
+    },
+    {
+        "question": "What are gas fees in Ethereum?",
+        "answer": "Gas fees are the costs required to perform transactions or execute smart contracts on the Ethereum network. Gas fees are paid in Ether (ETH) and are calculated based on the complexity of the operation and the current network congestion. They incentivize miners to process transactions and prevent spam."
+    },
+    {
+        "question": "How do I handle errors in Solidity?",
+        "answer": "In Solidity, you can handle errors using `require`, `assert`, and `revert` statements. `require` is used to validate inputs and conditions, `assert` is used for internal error checking, and `revert` is used to revert the state and provide an error message. For example: `require(msg.value > 0, 'Value must be greater than 0');`."
+    },
+    {
+        "question": "What is a fallback function in Solidity?",
+        "answer": "A fallback function in Solidity is a special function that is executed when a contract receives Ether without a specific function call or when a non-existent function is called. It is declared using the `fallback()` or `receive()` keywords. For example: `fallback() external payable {}`."
+    },
+    {
+        "question": "How do I interact with another smart contract in Solidity?",
+        "answer": "To interact with another smart contract in Solidity, you need its address and ABI (Application Binary Interface). You can create an instance of the contract using the address and ABI, and then call its functions. For example: `OtherContract other = OtherContract(address); other.someFunction();`."
+    },
+    {
+        "question": "What are events in Solidity and how are they used?",
+        "answer": "Events in Solidity are used to log and notify external applications about specific occurrences in a smart contract. They are declared using the `event` keyword and emitted using the `emit` keyword. For example: `event Transfer(address indexed from, address indexed to, uint value); emit Transfer(msg.sender, recipient, amount);`."
+    },
+    {
+        "question": "What is the difference between `storage` and `memory` in Solidity?",
+        "answer": "In Solidity, `storage` refers to persistent data stored on the blockchain, while `memory` refers to temporary data that exists only during the execution of a function. Variables declared in `storage` are expensive to use, whereas `memory` is cheaper and used for temporary computations."
+    },
+    {
+        "question": "How do I prevent reentrancy attacks in Solidity?",
+        "answer": "To prevent reentrancy attacks in Solidity, you can use the `checks-effects-interactions` pattern or apply the `ReentrancyGuard` utility from OpenZeppelin. Additionally, you should avoid making external calls before updating the contract state. For example: `require(balances[msg.sender] >= amount); balances[msg.sender] -= amount; (bool success, ) = msg.sender.call{value: amount}('');`."
+    },
+    {
+        "question": "What is the purpose of the `msg.sender` global variable in Solidity?",
+        "answer": "The `msg.sender` global variable in Solidity represents the address of the account or contract that initiated the current transaction or function call. It is commonly used to identify the caller and enforce access control or permissions."
+    },
+    {
+        "question": "How do I create a token in Solidity?",
+        "answer": "To create a token in Solidity, you can implement the ERC-20 or ERC-721 standard. For an ERC-20 token, you need to define functions like `transfer`, `balanceOf`, and `approve`. You can use OpenZeppelin's library to simplify the process. Example: `import '@openzeppelin/contracts/token/ERC20/ERC20.sol'; contract MyToken is ERC20 { constructor() ERC20('MyToken', 'MTK') {} }`."
+    },
+    {
+        "question": "What is the difference between `view` and `pure` functions in Solidity?",
+        "answer": "In Solidity, `view` functions are read-only and do not modify the state of the contract, while `pure` functions do not read or modify the state. `view` functions can access state variables, whereas `pure` functions cannot. For example: `function getBalance() public view returns (uint) { return balances[msg.sender]; }`."
+    },
+    {
+        "question": "How do I handle Ether transfers in Solidity?",
+        "answer": "To handle Ether transfers in Solidity, you can use the `transfer`, `send`, or `call` methods. The `transfer` and `send` methods automatically revert on failure, while `call` provides more flexibility but requires manual error handling. Example: `payable(msg.sender).transfer(amount);`."
+    },
+    {
+        "question": "What is a modifier in Solidity?",
+        "answer": "A modifier in Solidity is a reusable piece of code that can be applied to functions to enforce certain conditions. It is declared using the `modifier` keyword and applied using the `modifier` name in the function definition. Example: `modifier onlyOwner { require(msg.sender == owner, 'Not owner'); _; } function changeOwner(address newOwner) public onlyOwner { owner = newOwner; }`."
+    },
+    {
+        "question": "How do I create a basic smart contract in Solidity?",
+        "answer": "A basic smart contract in Solidity starts with the `contract` keyword. Here's an example:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract MyContract {\n    string public message;\n\n    constructor(string memory _message) {\n        message = _message;\n    }\n\n    function setMessage(string memory _message) public {\n        message = _message;\n    }\n}\n```\nThis contract allows you to store and update a message."
+    },
+    {
+        "question": "How do I create an ERC-20 token in Solidity?",
+        "answer": "You can create an ERC-20 token using OpenZeppelin's library. Here's an example:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport '@openzeppelin/contracts/token/ERC20/ERC20.sol';\n\ncontract MyToken is ERC20 {\n    constructor(uint256 initialSupply) ERC20('MyToken', 'MTK') {\n        _mint(msg.sender, initialSupply);\n    }\n}\n```\nThis contract creates a token with the name 'MyToken' and symbol 'MTK', and mints an initial supply to the deployer."
+    },
+    {
+        "question": "How do I create an ERC-721 (NFT) contract in Solidity?",
+        "answer": "You can create an ERC-721 token (NFT) using OpenZeppelin's library. Here's an example:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport '@openzeppelin/contracts/token/ERC721/ERC721.sol';\nimport '@openzeppelin/contracts/utils/Counters.sol';\n\ncontract MyNFT is ERC721 {\n    using Counters for Counters.Counter;\n    Counters.Counter private _tokenIds;\n\n    constructor() ERC721('MyNFT', 'MNFT') {}\n\n    function mintNFT(address recipient) public returns (uint256) {\n        _tokenIds.increment();\n        uint256 newItemId = _tokenIds.current();\n        _mint(recipient, newItemId);\n        return newItemId;\n    }\n}\n```\nThis contract allows you to mint NFTs and assign them to a recipient."
+    },
+    {
+        "question": "How do I create a simple auction contract in Solidity?",
+        "answer": "Here's an example of a simple auction contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract SimpleAuction {\n    address payable public beneficiary;\n    uint256 public auctionEndTime;\n    address public highestBidder;\n    uint256 public highestBid;\n\n    constructor(uint256 _biddingTime, address payable _beneficiary) {\n        beneficiary = _beneficiary;\n        auctionEndTime = block.timestamp + _biddingTime;\n    }\n\n    function bid() public payable {\n        require(block.timestamp <= auctionEndTime, 'Auction ended');\n        require(msg.value > highestBid, 'Bid too low');\n\n        if (highestBidder != address(0)) {\n            payable(highestBidder).transfer(highestBid);\n        }\n\n        highestBidder = msg.sender;\n        highestBid = msg.value;\n    }\n\n    function withdraw() public {\n        require(block.timestamp > auctionEndTime, 'Auction not ended');\n        beneficiary.transfer(highestBid);\n    }\n}\n```\nThis contract allows users to bid in an auction, and the highest bidder wins when the auction ends."
+    },
+    {
+        "question": "How do I create a multi-signature wallet contract in Solidity?",
+        "answer": "Here's an example of a basic multi-signature wallet contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract MultiSigWallet {\n    address[] public owners;\n    uint256 public required;\n\n    struct Transaction {\n        address to;\n        uint256 value;\n        bool executed;\n    }\n\n    Transaction[] public transactions;\n    mapping(uint256 => mapping(address => bool)) public approvals;\n\n    modifier onlyOwner() {\n        bool isOwner = false;\n        for (uint256 i = 0; i < owners.length; i++) {\n            if (owners[i] == msg.sender) {\n                isOwner = true;\n                break;\n            }\n        }\n        require(isOwner, 'Not an owner');\n        _;\n    }\n\n    constructor(address[] memory _owners, uint256 _required) {\n        owners = _owners;\n        required = _required;\n    }\n\n    function submitTransaction(address _to, uint256 _value) public onlyOwner {\n        transactions.push(Transaction({to: _to, value: _value, executed: false}));\n    }\n\n    function approveTransaction(uint256 _txId) public onlyOwner {\n        require(!transactions[_txId].executed, 'Transaction already executed');\n        approvals[_txId][msg.sender] = true;\n    }\n\n    function executeTransaction(uint256 _txId) public onlyOwner {\n        require(!transactions[_txId].executed, 'Transaction already executed');\n        uint256 approvalCount = 0;\n        for (uint256 i = 0; i < owners.length; i++) {\n            if (approvals[_txId][owners[i]]) {\n                approvalCount++;\n            }\n        }\n        require(approvalCount >= required, 'Not enough approvals');\n        transactions[_txId].executed = true;\n        payable(transactions[_txId].to).transfer(transactions[_txId].value);\n    }\n}\n```\nThis contract allows multiple owners to approve and execute transactions."
+    },
+    {
+        "question": "How do I create a time-locked wallet contract in Solidity?",
+        "answer": "Here's an example of a time-locked wallet contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract TimeLockedWallet {\n    address public beneficiary;\n    uint256 public releaseTime;\n\n    constructor(address _beneficiary, uint256 _releaseTime) payable {\n        beneficiary = _beneficiary;\n        releaseTime = _releaseTime;\n    }\n\n    function withdraw() public {\n        require(block.timestamp >= releaseTime, 'Funds are locked');\n        require(msg.sender == beneficiary, 'Not the beneficiary');\n        payable(beneficiary).transfer(address(this).balance);\n    }\n}\n```\nThis contract locks funds until a specified release time, after which the beneficiary can withdraw them."
+    },
+    {
+        "question": "How do I create a staking contract in Solidity?",
+        "answer": "Here's an example of a basic staking contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract StakingContract {\n    mapping(address => uint256) public balances;\n    uint256 public stakingPeriod = 30 days;\n    mapping(address => uint256) public stakingStartTime;\n\n    function stake() public payable {\n        require(msg.value > 0, 'Cannot stake 0');\n        balances[msg.sender] += msg.value;\n        stakingStartTime[msg.sender] = block.timestamp;\n    }\n\n    function withdraw() public {\n        require(balances[msg.sender] > 0, 'No balance to withdraw');\n        require(block.timestamp >= stakingStartTime[msg.sender] + stakingPeriod, 'Staking period not over');\n        payable(msg.sender).transfer(balances[msg.sender]);\n        balances[msg.sender] = 0;\n    }\n}\n```\nThis contract allows users to stake Ether and withdraw it after a staking period."
+    },
+    {
+        "question": "How do I create a voting contract in Solidity?",
+        "answer": "Here's an example of a simple voting contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract VotingContract {\n    struct Proposal {\n        string name;\n        uint256 voteCount;\n    }\n\n    Proposal[] public proposals;\n    mapping(address => bool) public voters;\n\n    function addProposal(string memory _name) public {\n        proposals.push(Proposal({name: _name, voteCount: 0}));\n    }\n\n    function vote(uint256 _proposalId) public {\n        require(!voters[msg.sender], 'Already voted');\n        voters[msg.sender] = true;\n        proposals[_proposalId].voteCount++;\n    }\n\n    function winningProposal() public view returns (uint256) {\n        uint256 winningVoteCount = 0;\n        uint256 winningProposalId;\n        for (uint256 i = 0; i < proposals.length; i++) {\n            if (proposals[i].voteCount > winningVoteCount) {\n                winningVoteCount = proposals[i].voteCount;\n                winningProposalId = i;\n            }\n        }\n        return winningProposalId;\n    }\n}\n```\nThis contract allows users to add proposals and vote for them."
+    },
+    {
+        "question": "How do I create a contract with access control in Solidity?",
+        "answer": "Here's an example of a contract with access control using OpenZeppelin's `Ownable` library:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport '@openzeppelin/contracts/access/Ownable.sol';\n\ncontract AccessControl is Ownable {\n    function restrictedFunction() public onlyOwner {\n        // Only the owner can call this function\n    }\n}\n```\nThis contract restricts access to certain functions to the owner only."
+    },
+    {
+        "question": "How do I create a contract that accepts Ether deposits?",
+        "answer": "Here's an example of a contract that accepts Ether deposits:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract DepositContract {\n    mapping(address => uint256) public balances;\n\n    function deposit() public payable {\n        balances[msg.sender] += msg.value;\n    }\n\n    function withdraw(uint256 _amount) public {\n        require(balances[msg.sender] >= _amount, 'Insufficient balance');\n        balances[msg.sender] -= _amount;\n        payable(msg.sender).transfer(_amount);\n    }\n}\n```\nThis contract allows users to deposit and withdraw Ether."
+    },
+    {
+        "question": "How do I create a contract that allows users to swap tokens?",
+        "answer": "Here's an example of a simple token swap contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport '@openzeppelin/contracts/token/ERC20/IERC20.sol';\n\ncontract TokenSwap {\n    IERC20 public tokenA;\n    IERC20 public tokenB;\n    uint256 public exchangeRate;\n\n    constructor(address _tokenA, address _tokenB, uint256 _exchangeRate) {\n        tokenA = IERC20(_tokenA);\n        tokenB = IERC20(_tokenB);\n        exchangeRate = _exchangeRate;\n    }\n\n    function swapTokens(uint256 _amount) public {\n        require(tokenA.transferFrom(msg.sender, address(this), _amount), 'Transfer failed');\n        uint256 amountB = _amount * exchangeRate;\n        require(tokenB.transfer(msg.sender, amountB), 'Transfer failed');\n    }\n}\n```\nThis contract allows users to swap Token A for Token B at a fixed exchange rate."
+    },
+    {
+        "question": "How do I create a contract that implements a lottery system?",
+        "answer": "Here's an example of a simple lottery contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Lottery {\n    address[] public participants;\n    address public winner;\n    uint256 public ticketPrice;\n\n    constructor(uint256 _ticketPrice) {\n        ticketPrice = _ticketPrice;\n    }\n\n    function enter() public payable {\n        require(msg.value == ticketPrice, 'Incorrect ticket price');\n        participants.push(msg.sender);\n    }\n\n    function pickWinner() public {\n        require(participants.length > 0, 'No participants');\n        uint256 index = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % participants.length;\n        winner = participants[index];\n        payable(winner).transfer(address(this).balance);\n    }\n}\n```\nThis contract allows users to enter a lottery by paying a ticket price, and a winner is randomly selected."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized marketplace?",
+        "answer": "Here's an example of a simple decentralized marketplace:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Marketplace {\n    struct Item {\n        uint256 id;\n        string name;\n        uint256 price;\n        address seller;\n        bool sold;\n    }\n\n    Item[] public items;\n    uint256 public itemCount;\n\n    function listItem(string memory _name, uint256 _price) public {\n        items.push(Item(itemCount, _name, _price, msg.sender, false));\n        itemCount++;\n    }\n\n    function buyItem(uint256 _id) public payable {\n        require(_id < items.length, 'Item does not exist');\n        require(!items[_id].sold, 'Item already sold');\n        require(msg.value == items[_id].price, 'Incorrect price');\n        items[_id].sold = true;\n        payable(items[_id].seller).transfer(msg.value);\n    }\n}\n```\nThis contract allows users to list items for sale and buy them using Ether."
+    },
+    {
+        "question": "How do I create a contract that implements a crowdfunding campaign?",
+        "answer": "Here's an example of a crowdfunding contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Crowdfunding {\n    address public creator;\n    uint256 public goal;\n    uint256 public deadline;\n    mapping(address => uint256) public contributions;\n\n    constructor(uint256 _goal, uint256 _duration) {\n        creator = msg.sender;\n        goal = _goal;\n        deadline = block.timestamp + _duration;\n    }\n\n    function contribute() public payable {\n        require(block.timestamp < deadline, 'Campaign ended');\n        contributions[msg.sender] += msg.value;\n    }\n\n    function withdrawFunds() public {\n        require(block.timestamp >= deadline, 'Campaign not ended');\n        require(address(this).balance >= goal, 'Goal not reached');\n        payable(creator).transfer(address(this).balance);\n    }\n}\n```\nThis contract allows users to contribute to a crowdfunding campaign, and the creator can withdraw funds if the goal is met."
+    },
+    {
+        "question": "How do I create a contract that implements a vesting schedule?",
+        "answer": "Here's an example of a vesting contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Vesting {\n    address public beneficiary;\n    uint256 public startTime;\n    uint256 public duration;\n    uint256 public totalAmount;\n    uint256 public releasedAmount;\n\n    constructor(address _beneficiary, uint256 _duration, uint256 _totalAmount) {\n        beneficiary = _beneficiary;\n        startTime = block.timestamp;\n        duration = _duration;\n        totalAmount = _totalAmount;\n    }\n\n    function release() public {\n        require(block.timestamp >= startTime, 'Vesting not started');\n        uint256 elapsedTime = block.timestamp - startTime;\n        uint256 vestedAmount = (totalAmount * elapsedTime) / duration;\n        uint256 unreleasedAmount = vestedAmount - releasedAmount;\n        require(unreleasedAmount > 0, 'No tokens to release');\n        releasedAmount += unreleasedAmount;\n        payable(beneficiary).transfer(unreleasedAmount);\n    }\n}\n```\nThis contract releases funds to the beneficiary over a specified vesting period."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized identity system?",
+        "answer": "Here's an example of a decentralized identity contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract DecentralizedIdentity {\n    struct Identity {\n        string name;\n        uint256 age;\n        bool verified;\n    }\n\n    mapping(address => Identity) public identities;\n\n    function registerIdentity(string memory _name, uint256 _age) public {\n        identities[msg.sender] = Identity(_name, _age, false);\n    }\n\n    function verifyIdentity(address _user) public {\n        identities[_user].verified = true;\n    }\n}\n```\nThis contract allows users to register and verify their identities."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized file storage system?",
+        "answer": "Here's an example of a decentralized file storage contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract FileStorage {\n    struct File {\n        string hash;\n        address owner;\n    }\n\n    mapping(uint256 => File) public files;\n    uint256 public fileCount;\n\n    function uploadFile(string memory _hash) public {\n        files[fileCount] = File(_hash, msg.sender);\n        fileCount++;\n    }\n\n    function getFile(uint256 _id) public view returns (string memory) {\n        require(files[_id].owner == msg.sender, 'Not the owner');\n        return files[_id].hash;\n    }\n}\n```\nThis contract allows users to upload and retrieve file hashes."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized voting system with delegation?",
+        "answer": "Here's an example of a voting contract with delegation:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract VotingWithDelegation {\n    struct Voter {\n        uint256 weight;\n        bool voted;\n        address delegate;\n    }\n\n    struct Proposal {\n        string name;\n        uint256 voteCount;\n    }\n\n    mapping(address => Voter) public voters;\n    Proposal[] public proposals;\n\n    function createProposal(string memory _name) public {\n        proposals.push(Proposal(_name, 0));\n    }\n\n    function delegate(address _to) public {\n        require(!voters[msg.sender].voted, 'Already voted');\n        require(_to != msg.sender, 'Self-delegation not allowed');\n        while (voters[_to].delegate != address(0)) {\n            _to = voters[_to].delegate;\n        }\n        voters[msg.sender].voted = true;\n        voters[msg.sender].delegate = _to;\n        voters[_to].weight += 1;\n    }\n\n    function vote(uint256 _proposalId) public {\n        require(!voters[msg.sender].voted, 'Already voted');\n        voters[msg.sender].voted = true;\n        proposals[_proposalId].voteCount += voters[msg.sender].weight;\n    }\n}\n```\nThis contract allows voters to delegate their votes to others."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized insurance system?",
+        "answer": "Here's an example of a decentralized insurance contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Insurance {\n    struct Policy {\n        uint256 premium;\n        uint256 payout;\n        bool claimed;\n    }\n\n    mapping(address => Policy) public policies;\n\n    function purchasePolicy(uint256 _premium, uint256 _payout) public payable {\n        require(msg.value == _premium, 'Incorrect premium');\n        policies[msg.sender] = Policy(_premium, _payout, false);\n    }\n\n    function claimPayout() public {\n        require(!policies[msg.sender].claimed, 'Payout already claimed');\n        policies[msg.sender].claimed = true;\n        payable(msg.sender).transfer(policies[msg.sender].payout);\n    }\n}\n```\nThis contract allows users to purchase insurance policies and claim payouts."
+    },
+    {
+        "question": "How do I create a contract that implements a decentralized lending system?",
+        "answer": "Here's an example of a decentralized lending contract:\n\n```solidity\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Lending {\n    struct Loan {\n        uint256 amount;\n        uint256 interestRate;\n        bool repaid;\n    }\n\n    mapping(address => Loan) public loans;\n\n    function requestLoan(uint256 _amount, uint256 _interestRate) public {\n        loans[msg.sender] = Loan(_amount, _interestRate, false);\n    }\n\n    function repayLoan() public payable {\n        require(!loans[msg.sender].repaid, 'Loan already repaid');\n        uint256 repaymentAmount = loans[msg.sender].amount + (loans[msg.sender].amount * loans[msg.sender].interestRate) / 100;\n        require(msg.value == repaymentAmount, 'Incorrect repayment amount');\n        loans[msg.sender].repaid = true;\n    }\n}\n```\nThis contract allows users to request and repay loans."
+    },
+    {
+        "question": "How do you implement a simple ERC20 token in Solidity?",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@openzeppelin/contracts/token/ERC20/ERC20.sol\";\n\ncontract MyToken is ERC20 {\n    constructor(uint256 initialSupply) ERC20(\"MyToken\", \"MTK\") {\n        _mint(msg.sender, initialSupply);\n    }\n}"
+      },
+      {
+        "question": "How do you implement an Ownable contract where only the owner can perform certain actions?",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Ownable {\n    address public owner;\n\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Not the contract owner\");\n        _;\n    }\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function transferOwnership(address newOwner) public onlyOwner {\n        require(newOwner != address(0), \"Invalid new owner\");\n        owner = newOwner;\n    }\n}"
+      },
+      {
+        "question": "How do you implement a simple voting contract where users can vote on proposals?",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Voting {\n    struct Proposal {\n        string name;\n        uint256 voteCount;\n    }\n\n    mapping(address => bool) public hasVoted;\n    Proposal[] public proposals;\n\n    function addProposal(string memory name) public {\n        proposals.push(Proposal(name, 0));\n    }\n\n    function vote(uint256 proposalIndex) public {\n        require(!hasVoted[msg.sender], \"Already voted\");\n        require(proposalIndex < proposals.length, \"Invalid proposal\");\n\n        proposals[proposalIndex].voteCount += 1;\n        hasVoted[msg.sender] = true;\n    }\n\n    function getWinningProposal() public view returns (string memory) {\n        uint256 maxVotes = 0;\n        uint256 winningIndex = 0;\n        for (uint256 i = 0; i < proposals.length; i++) {\n            if (proposals[i].voteCount > maxVotes) {\n                maxVotes = proposals[i].voteCount;\n                winningIndex = i;\n            }\n        }\n        return proposals[winningIndex].name;\n    }\n}"
+      },
+      {
+        "question": "How do you implement a time-locked wallet where funds can only be withdrawn after a certain time?",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract TimelockWallet {\n    address public owner;\n    uint256 public unlockTime;\n\n    constructor(uint256 _unlockTime) {\n        require(_unlockTime > block.timestamp, \"Unlock time must be in the future\");\n        owner = msg.sender;\n        unlockTime = _unlockTime;\n    }\n\n    function deposit() public payable {}\n\n    function withdraw() public {\n        require(msg.sender == owner, \"Not the owner\");\n        require(block.timestamp >= unlockTime, \"Funds are locked\");\n        payable(owner).transfer(address(this).balance);\n    }\n}\n"
+      },
+      {
+        "question": "Implement a time-locked vault contract where funds can only be withdrawn after a specified date",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract TimeLockVault {\n    address public owner;\n    uint256 public unlockTimestamp;\n    \n    constructor(uint256 _unlockDelay) {\n        owner = msg.sender;\n        unlockTimestamp = block.timestamp + _unlockDelay;\n    }\n    \n    receive() external payable {}\n    \n    function withdraw() external {\n        require(msg.sender == owner, \"Not owner\");\n        require(block.timestamp >= unlockTimestamp, \"Funds locked\");\n        payable(owner).transfer(address(this).balance);\n    }\n}"
+      },
+      {
+        "question": "Create a voting system where token holders can propose and vote on initiatives",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Governance {\n    struct Proposal {\n        string description;\n        uint256 voteCount;\n        mapping(address => bool) voted;\n    }\n    \n    mapping(uint256 => Proposal) public proposals;\n    uint256 public proposalCount;\n    address public tokenContract;\n    \n    constructor(address _tokenContract) {\n        tokenContract = _tokenContract;\n    }\n    \n    function createProposal(string memory _description) external {\n        proposals[proposalCount++].description = _description;\n    }\n    \n    function vote(uint256 _proposalId, uint256 _weight) external {\n        Proposal storage p = proposals[_proposalId];\n        require(!p.voted[msg.sender], \"Already voted\");\n        // In real implementation, verify token balance from ERC20 contract\n        p.voteCount += _weight;\n        p.voted[msg.sender] = true;\n    }\n}"
+      },
+      {
+        "question": "Implement a multi-signature wallet requiring 3/5 approvals for transactions",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract MultiSigWallet {\n    address[] public owners;\n    uint256 public required;\n    \n    struct Transaction {\n        address to;\n        uint256 value;\n        bytes data;\n        bool executed;\n    }\n    \n    Transaction[] public transactions;\n    mapping(uint256 => mapping(address => bool)) public confirmations;\n    \n    constructor(address[] memory _owners, uint256 _required) {\n        require(_required <= _owners.length, \"Invalid required\");\n        owners = _owners;\n        required = _required;\n    }\n    \n    function submitTransaction(address _to, uint256 _value, bytes memory _data) external {\n        transactions.push(Transaction(_to, _value, _data, false));\n    }\n    \n    function confirmTransaction(uint256 _txId) external {\n        require(isOwner(msg.sender), \"Not owner\");\n        confirmations[_txId][msg.sender] = true;\n        if (isConfirmed(_txId)) {\n            executeTransaction(_txId);\n        }\n    }\n    \n    function isConfirmed(uint256 _txId) internal view returns (bool) {\n        uint256 count;\n        for (uint256 i; i < owners.length; i++) {\n            if (confirmations[_txId][owners[i]]) count++;\n        }\n        return count >= required;\n    }\n    \n    function executeTransaction(uint256 _txId) internal {\n        Transaction storage txn = transactions[_txId];\n        (bool success, ) = txn.to.call{value: txn.value}(txn.data);\n        require(success, \"Execution failed\");\n        txn.executed = true;\n    }\n    \n    function isOwner(address _addr) internal view returns (bool) {\n        for (uint256 i; i < owners.length; i++) {\n            if (owners[i] == _addr) return true;\n        }\n        return false;\n    }\n}"
+      },
+      {
+        "question": "Create an ERC721 contract with minting functionality and royalty information",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@openzeppelin/contracts/token/ERC721/ERC721.sol\";\n\ncontract RoyaltyNFT is ERC721 {\n    uint256 public tokenCounter;\n    mapping(uint256 => address) public creators;\n    mapping(uint256 => uint256) public royalties;\n    \n    constructor() ERC721(\"RoyaltyNFT\", \"RNFT\") {\n        tokenCounter = 0;\n    }\n    \n    function mint(string memory _tokenURI, uint256 _royalty) external {\n        _safeMint(msg.sender, tokenCounter);\n        _setTokenURI(tokenCounter, _tokenURI);\n        creators[tokenCounter] = msg.sender;\n        royalties[tokenCounter] = _royalty;\n        tokenCounter++;\n    }\n    \n    function royaltyInfo(uint256 _tokenId, uint256 _salePrice) external view returns (address, uint256) {\n        return (creators[_tokenId], (_salePrice * royalties[_tokenId]) / 100);\n    }\n}"
+      },
+      {
+        "question": "Implement a staking contract that distributes rewards proportionally to stakers",
+        "answer": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract StakingSystem {\n    mapping(address => uint256) public stakedBalances;\n    mapping(address => uint256) public rewardBalances;\n    uint256 public totalStaked;\n    uint256 public rewardPerToken;\n    uint256 public lastUpdate;\n    \n    function updateRewards() internal {\n        uint256 timeElapsed = block.timestamp - lastUpdate;\n        if (totalStaked > 0) {\n            rewardPerToken += (1 ether * timeElapsed) / totalStaked;\n        }\n        lastUpdate = block.timestamp;\n    }\n    \n    function stake(uint256 _amount) external {\n        updateRewards();\n        stakedBalances[msg.sender] += _amount;\n        totalStaked += _amount;\n    }\n    \n    function unstake(uint256 _amount) external {\n        updateRewards();\n        require(stakedBalances[msg.sender] >= _amount, \"Insufficient balance\");\n        stakedBalances[msg.sender] -= _amount;\n        totalStaked -= _amount;\n    }\n    \n    function claimRewards() external {\n        updateRewards();\n        uint256 rewards = stakedBalances[msg.sender] * (rewardPerToken - userRewardPerTokenPaid[msg.sender]);\n        rewardBalances[msg.sender] += rewards;\n        (bool success, ) = msg.sender.call{value: rewardBalances[msg.sender]}(\"\");\n        require(success, \"Transfer failed\");\n        rewardBalances[msg.sender] = 0;\n    }\n}"
+      }
+]

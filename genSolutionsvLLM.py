@@ -8,6 +8,19 @@ from threading import Lock
 import re
 import argparse
 
+def convert_sets_to_lists(obj):
+    """Recursively convert sets to lists in nested data structures"""
+    if isinstance(obj, dict):
+        return {key: convert_sets_to_lists(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_sets_to_lists(item) for item in obj]
+    elif isinstance(obj, set):
+        return list(obj)
+    elif isinstance(obj, (str, int, float, bool, type(None))):
+        return obj
+    else:
+        return str(obj)  # Convert any other types to strings
+
 def extract_cot_and_solution(response: str) -> tuple:
     """
     Extract Chain of Thought (between <think></think> tags) and solution from model response.
@@ -26,20 +39,39 @@ def generate_vllm_prompt(question: str) -> list:
     """Generate messages for the vLLM API"""
     return [{
         "role": "user",
-        "content": f"""You are a principal engineer at NVIDIA, expert of all programming languages, cracked engineer. Given a coding question, provide a detailed solution.
-        First, think step by step about how to solve the problem within <think></think> tags.
-        Then provide a clean, efficient, and well-commented solution.
-        Use best practices and handle edge cases. Give your best!
-        
+        "content": f"""
+        You are a principal Solidity engineer, an expert in blockchain development and smart contract security. Given a Solidity smart contract problem, provide a detailed, secure, and optimized solution.
+
+        First, analyze the problem step by step within <think></think> tags, considering:
+        - The core functionality and required features.
+        - Best practices for security, gas efficiency, and maintainability.
+        - Potential attack vectors (e.g., reentrancy, frontrunning, overflow/underflow).
+        - Compliance with standards (e.g., OpenZeppelin, ERC-20, ERC-721, ERC-1155, EIP-2535).
+        - Upgradeability and extensibility.
+
+        Then, provide a clean, well-structured Solidity implementation:
+        - Use modular and reusable contract architecture.
+        - Apply appropriate access controls and role-based permissions.
+        - Follow Solidity best practices for versioning, error handling, and state management.
+        - Implement and explain any necessary optimizations.
+
+        Ensure the solution includes:
+        - Detailed comments for clarity.
+        - Unit test considerations.
+        - Edge case handling.
+        - Gas-efficient implementations.
+
+        Give your best!
+
         Question: {question}"""
     }]
 
 def query_vllm(prompt: list, retries: int = 3, delay: float = 1.0) -> str:
     """Query the vLLM API with retries"""
-    url = "http://localhost:8000/v1/chat/completions"
+    url = "http://localhost:9000/v1/chat/completions"
     headers = {"Content-Type": "application/json"}
     data = {
-        "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+        "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
         "messages": prompt
     }
     
@@ -47,7 +79,6 @@ def query_vllm(prompt: list, retries: int = 3, delay: float = 1.0) -> str:
         try:
             response = requests.post(url, headers=headers, json=data)
             response.raise_for_status()
-            # Extract the content from the response
             return response.json()['choices'][0]['message']['content']
         except requests.exceptions.RequestException as e:
             if attempt == retries - 1:
@@ -60,18 +91,19 @@ def process_single_question(item: dict, index: int, file_lock: Lock, output_file
     """Process a single question and save results"""
     try:
         # Generate prompt and get model response
-        prompt = generate_vllm_prompt(item['input'])
+        prompt = generate_vllm_prompt(item['question'])
         response = query_vllm(prompt)
         
         if response:
             # Extract CoT and solution
             cot, solution = extract_cot_and_solution(response)
             
-            result = {
-                "input": item['input'],
+            # Create result dictionary and convert any sets to lists
+            result = convert_sets_to_lists({
+                "question": item['question'],
                 "cot": cot,
                 "solution": solution
-            }
+            })
         else:
             print(f"Warning: No response for question {index}")
             return index, None
@@ -108,8 +140,8 @@ def process_single_question(item: dict, index: int, file_lock: Lock, output_file
         print(f"Error processing question {index}: {str(e)}")
         return index, None
 
-def generate_solutions(input_file: str = 'data/updated_codingQues.json',
-                      output_file: str = 'data/solutions.json',
+def generate_solutions(input_file: str = 'bestDataNew.json',
+                      output_file: str = 'soliditySols.json',
                       max_workers: int = 4,
                       test_mode: bool = False) -> None:
     """
@@ -171,10 +203,11 @@ def generate_solutions(input_file: str = 'data/updated_codingQues.json',
         if test_mode:
             print("\nSample of generated solutions:")
             for item in final_data[:2]:
-                print("\nInput:", item['input'][:100], "...")
-                print("\nCoT:", item['cot'][:100], "...")
-                print("\nSolution:", item['solution'][:100], "...")
-                print("-" * 80)
+                if item:  # Check if item exists
+                    print("\nQuestion:", item['question'][:100], "...")
+                    print("\nCoT:", item['cot'][:100], "...")
+                    print("\nSolution:", item['solution'][:100], "...")
+                    print("-" * 80)
                 
     except FileNotFoundError:
         print(f"Error: Could not find the input file {input_file}")
